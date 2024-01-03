@@ -12753,6 +12753,12 @@ export const Proof: ProofInterface = {
     "inclusion_proof": {
       "proof": [],
       "total_leaves": 3
-    }
+    } as InclusionProof
   }
+}
+
+
+export interface InclusionProof {
+  proof: never[];
+  total_leaves: number;
 }

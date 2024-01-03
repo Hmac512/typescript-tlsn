@@ -3,6 +3,10 @@ import { RangeSet, Range } from "tree-range-set";
 import { ChaChaEncoder, EncodingInterface } from "./ChaChaEncoder";
 import { blake3 } from '@napi-rs/blake-hash'
 import { encode } from "./opening";
+import { Decommitment } from "./bcs";
+import { RedactedTranscript, RedactedTranscriptSlice } from "./Transcript";
+import { verifyInclusionProof } from "./merkleTree";
+
 
 
 
@@ -18,7 +22,7 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
 
 
     let indicies: number[] = []
-    let expectedHashes = []
+    let expectedHashes: Uint8Array[] = []
 
     let sent = new Uint8Array(new Array(header.sent_len).fill(0))
     let recv = new Uint8Array(new Array(header.recv_len).fill(0))
@@ -78,6 +82,10 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
             }
 
             if (intersects) throw new Error("Duplicate Data")
+
+            for (const range of rangeSet.subranges) {
+                sent_ranges.add(range)
+            }
         }
 
         if (direction === "Received") {
@@ -94,6 +102,9 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
             }
 
             if (intersects) throw new Error("Duplicate Data")
+            for (const range of rangeSet.subranges) {
+                recv_ranges.add(range)
+            }
         }
 
 
@@ -120,18 +131,83 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
         indicies.push(Number(key))
         const encoded = encode(opening, encodings);
         const jsonString = JSON.stringify(encoded)
-        console.log("jsonString", JSON.stringify(jsonString))
-        // let utf8Encode = new TextEncoder();
-        // const jsonBuffer = utf8Encode.encode(JSON.stringify(jsonString));
-        console.log(key, new Uint8Array(blake3(jsonString)))
 
 
+        let decommitment = Decommitment.serialize({
+            nonce: { 0: new Uint8Array(opening.Blake3.nonce) },
+            data: jsonString
+
+        }, { maxSize: 1e6 }).toBytes()
+
+        expectedHashes.push(new Uint8Array(blake3(Buffer.from(decommitment.buffer))))
+
+
+        let dest: number[]
+        if (direction === "Sent") dest = Array.from(sent)
+        else dest = Array.from(recv)
+        const data = opening.Blake3.data
+        for (const range of rangeSet.subranges.reverse()) {
+            const rangeSize = (range.upper - range.lower)
+            let start = data.length - rangeSize
+            dest.splice(start, rangeSize, ...data);
+            data.splice(start, rangeSize)
+        }
+
+        if (direction === "Sent") {
+            sent = new Uint8Array(dest)
+        }
+        else {
+            recv = new Uint8Array(dest)
+        }
 
 
     }
 
 
-    return true
+
+    const verifyResult = verifyInclusionProof(inclusion_proof, header.merkle_root, expectedHashes, indicies)
+
+
+
+
+    const sentTranscriptSlices: RedactedTranscriptSlice[] = []
+    const recvTranscriptSlices: RedactedTranscriptSlice[] = []
+
+    sent_ranges.subranges.forEach((range) => {
+        sentTranscriptSlices.push({
+            range,
+            data: sent.slice(range.lower, range.upper)
+
+        })
+    })
+    recv_ranges.subranges.forEach((range) => {
+        recvTranscriptSlices.push({
+            range,
+            data: recv.slice(range.lower, range.upper)
+
+        })
+    })
+
+
+    const sentTranscript: RedactedTranscript = {
+        headerLength: header.sent_len,
+        slices: sentTranscriptSlices
+    }
+
+    const recvTranscript: RedactedTranscript = {
+        headerLength: header.recv_len,
+        slices: recvTranscriptSlices
+    }
+
+
+    return { sentTranscript, recvTranscript }
+
+
+
+
+
+
+
 }
 
 

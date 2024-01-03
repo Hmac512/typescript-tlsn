@@ -104,7 +104,7 @@ describe('ChaChaRng', () => {
             const parsed = Decommitment.parse(new Uint8Array(testBCS1))
             expect(parsed).toBeDefined()
             const serialized = Decommitment.serialize(parsed, { maxSize: 1e7 }).toBytes()
-            console.log(testBCS1.length, serialized.length)
+            // console.log(testBCS1.length, serialized.length)
             expect(serialized).toEqual(new Uint8Array(testBCS1))
         });
 

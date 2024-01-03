@@ -7,9 +7,9 @@ describe('index', () => {
     it('should return true', () => {
 
 
-      // const result = verify(Proof, NotaryPublicKey);
+      const result = verify(Proof, NotaryPublicKey);
 
-      // expect(result).toBeTruthy()
+      expect(result).toBeTruthy()
     });
   });
 });

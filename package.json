@@ -50,6 +50,7 @@
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
     "@types/bn.js": "^5.1.5",
     "@types/jest": "^27.5.2",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^12.20.11",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
@@ -129,6 +130,7 @@
     "bn.js": "^5.2.1",
     "chacha": "^2.1.0",
     "js-crypto-key-utils": "^1.0.7",
+    "lodash": "^4.17.21",
     "tree-range-set": "^1.0.4"
   }
 }
