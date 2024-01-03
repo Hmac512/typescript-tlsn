@@ -27,6 +27,7 @@
   "homepage": "https://github.com/ryansonshine/typescript-npm-package-template#readme",
   "devDependencies": {
     "@types/bn.js": "^5.1.5",
+    "@types/crypto-js": "^4.2.1",
     "@types/jest": "^27.5.2",
     "@types/lodash": "^4.14.202",
     "@types/node": "^12.20.11",
@@ -49,7 +50,9 @@
     "@stablelib/chacha": "^1.0.1",
     "bn.js": "^5.2.1",
     "chacha": "^2.1.0",
+    "js-sha256": "^0.10.1",
     "lodash": "^4.17.21",
+    "merkletreejs": "^0.3.11",
     "tree-range-set": "^1.0.4"
   }
 }

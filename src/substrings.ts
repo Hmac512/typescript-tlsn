@@ -161,6 +161,8 @@ export const verifySubstrings = (
         indicies
     );
 
+    if (!verifyResult) throw new Error('Merkle Proof Not Valid');
+
     const sentTranscriptSlices: RedactedTranscriptSlice[] = [];
     const recvTranscriptSlices: RedactedTranscriptSlice[] = [];
 
