@@ -1,5 +1,4 @@
 import { ProofInterface } from "../test/proof";
-// import { cleanTranscript } from "./transcript";
 import { verifySubstrings as parseTranscript } from "./substrings";
 import { cleanTranscript } from "./Transcript";
 
@@ -18,7 +17,6 @@ export const verify = (proof: ProofInterface, publicKey: string) => {
   const recv = cleanTranscript(recvTranscript);
 
   const decoder = new TextDecoder();
-  //console.log("sent", sent)
 
   const sentTx = decoder.decode(sent);
   const recievedTx = decoder.decode(recv);
@@ -26,7 +24,13 @@ export const verify = (proof: ProofInterface, publicKey: string) => {
   console.log(`Sent Transcript: \n${sentTx}\n`);
   console.log(`Received Transcript: \n${recievedTx}\n`);
 
-  return true;
+
+  return {
+    server_name,
+    time,
+    sentTx,
+    recievedTx,
+  };
 };
 
 const parseUnixTimestamp = (timestamp: number): Date => {

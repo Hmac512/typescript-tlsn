@@ -3,7 +3,6 @@ import chacha from "chacha";
 
 export class ChaChaRng {
     seed: Uint8Array;
-    // stream: number;
     cipher: any;
 
     constructor(seedBytes: Uint8Array | Array<number>, stream = 0n) {

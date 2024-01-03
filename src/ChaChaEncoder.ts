@@ -3,7 +3,6 @@ import { ChaChaRng } from "./ChaChaRng";
 export const DELTA_STREAM_ID = 18446744073709551615n;
 
 export class ChaChaEncoder {
-    // rng: ChaChaRng;
     seed: Uint8Array;
     delta: Uint8Array;
     constructor(seed: Uint8Array) {

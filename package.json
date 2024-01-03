@@ -48,11 +48,15 @@
     "@napi-rs/blake-hash": "^1.3.4",
     "@noble/curves": "^1.3.0",
     "@stablelib/chacha": "^1.0.1",
+    "asn1.js": "^5.4.1",
     "bn.js": "^5.2.1",
     "chacha": "^2.1.0",
+    "ecdh-crypto": "^1.0.5",
     "js-sha256": "^0.10.1",
     "lodash": "^4.17.21",
     "merkletreejs": "^0.3.11",
-    "tree-range-set": "^1.0.4"
+    "starkbank-ecdsa": "^1.1.5",
+    "tree-range-set": "^1.0.4",
+    "uint8-to-base64": "^0.2.0"
   }
 }

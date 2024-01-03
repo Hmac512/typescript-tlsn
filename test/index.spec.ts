@@ -5,11 +5,8 @@ import { Proof } from './proof';
 describe('index', () => {
   describe('verify', () => {
     it('should return true', () => {
-
-
       const result = verify(Proof, NotaryPublicKey);
-
-      expect(result).toBeTruthy()
+      expect(result).toBeTruthy();
     });
   });
 });
