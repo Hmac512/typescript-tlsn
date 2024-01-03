@@ -1,7 +1,8 @@
 import { Direction, SessionHeaderInterface, SubstringsProofInterface } from "../test/proof";
 import { RangeSet, Range } from "tree-range-set";
-import { ChaChaEncoder } from "./encoder";
-
+import { ChaChaEncoder, EncodingInterface } from "./ChaChaEncoder";
+import { blake3 } from '@napi-rs/blake-hash'
+import { encode } from "./opening";
 
 
 
@@ -29,10 +30,10 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
     let total_opened = 0
 
     header.encoder_seed
-    const encoder = new ChaChaEncoder(header.encoder_seed)
+    const Encoder = new ChaChaEncoder(new Uint8Array(header.encoder_seed))
 
     for (const key in openings) {
-        console.log(key)
+        // console.log(key)
         const [{ ranges, direction }, opening] = openings[key]
 
 
@@ -104,7 +105,27 @@ export const verifySubstrings = (substringsProof: SubstringsProofInterface, head
         if (maxR > transcriptLength) throw new Error("RangeOutOfBounds")
 
 
-        let encodings = getValueIds(rangeSet, direction)
+        let ids = getValueIds(rangeSet, direction)
+        let encodings: EncodingInterface[] = []
+        ids.forEach((stringId) => {
+            const hash = new Uint8Array(blake3(stringId)).slice(0, 8)
+            const view = new DataView(hash.buffer, 0);
+            const id = view.getBigUint64(0, false)
+            // const encoder = Encoder.getRng(id)
+            encodings.push(Encoder.encode(id))
+
+        })
+
+
+        indicies.push(Number(key))
+        const encoded = encode(opening, encodings);
+        const jsonString = JSON.stringify(encoded)
+        console.log("jsonString", JSON.stringify(jsonString))
+        // let utf8Encode = new TextEncoder();
+        // const jsonBuffer = utf8Encode.encode(JSON.stringify(jsonString));
+        console.log(key, new Uint8Array(blake3(jsonString)))
+
+
 
 
     }

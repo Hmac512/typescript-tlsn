@@ -48,6 +48,7 @@
   "devDependencies": {
     "@ryansonshine/commitizen": "^4.2.8",
     "@ryansonshine/cz-conventional-changelog": "^3.3.4",
+    "@types/bn.js": "^5.1.5",
     "@types/jest": "^27.5.2",
     "@types/node": "^12.20.11",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -120,9 +121,14 @@
     ]
   },
   "dependencies": {
+    "@mysten/bcs": "^0.9.1",
+    "@napi-rs/blake-hash": "^1.3.4",
     "@noble/curves": "^1.3.0",
+    "@stablelib/chacha": "^1.0.1",
+    "blake3-js": "^0.0.5",
+    "bn.js": "^5.2.1",
+    "chacha": "^2.1.0",
     "js-crypto-key-utils": "^1.0.7",
-    "tree-range-set": "^1.0.4",
-    "ts-chacha20": "^1.2.0"
+    "tree-range-set": "^1.0.4"
   }
 }
