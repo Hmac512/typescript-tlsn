@@ -2,7 +2,7 @@ import { ChaCha20RngFromRng, ChaChaRng } from "../src/ChaChaRng";
 import { blake3 } from '@napi-rs/blake-hash'
 import { testBCS1, testCase2 } from "./data";
 import { bcs } from "@mysten/bcs";
-import { Decommitment } from "../src/bcs";
+import { Decommitment } from "../src/BCS";
 
 describe('ChaChaRng', () => {
     describe('ChaChaRng seed', () => {

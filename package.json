@@ -1,7 +1,7 @@
 {
-  "name": "typescript-npm-package-template",
+  "name": "typescript-tlsn",
   "version": "0.0.0-development",
-  "description": "A template for creating npm packages using TypeScript and VSCode",
+  "description": "",
   "main": "./lib/index.js",
   "files": [
     "lib/**/*"
